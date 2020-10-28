@@ -130,6 +130,19 @@ public class Particle implements Comparable<Particle> {
         this.particlesSameCellList.add(this);
     }
 
+
+    public Particle(Double x, Double y, Double r, Double angle){
+        this.radius = r;
+        this.angle = angle;
+        this.x = x; //placeholder
+        this.vx = 0.0;
+        this.vy = 0.0;
+        this.y = y; //placeholder
+        this.neighbours = new TreeSet<>();
+        this.particlesSameCellList = new LinkedList<>();
+        this.particlesSameCellList.add(this);
+    }
+
     public String toString(){
         return this.getId().toString();
     }
