@@ -30,8 +30,9 @@ public class FileHandler {
     }
 
     public SimInfo loadData(){
-        SimInfo info = loadStaticFile();
-        return loadDynamicFile(info);
+        return loadStaticFile();
+        //SimInfo info = loadStaticFile();
+        //return loadDynamicFile(info);
     }
 
     public SimInfo loadStaticFile()  {
@@ -40,17 +41,25 @@ public class FileHandler {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(staticInputFile)));
             String s;
-            ret.setN(Integer.parseInt(br.readLine()));
-            ret.setL(Integer.parseInt(br.readLine()));
+            ret.setN(Integer.parseInt(br.readLine())); //N
+            ret.setL(Integer.parseInt(br.readLine())); //L
+            ret.setDmax(Double.parseDouble(br.readLine())); //dmax
+            double rmin = Double.parseDouble(br.readLine()); //rmin
+            ret.setRmin(rmin);
+            ret.setRmax(Double.parseDouble(br.readLine())); //rmax
+            ret.setTau(Double.parseDouble(br.readLine())); //tau
+            ret.setBetha(Double.parseDouble(br.readLine())); //betha
             //particles
             int index = 0;
             while ((s = br.readLine()) != null) {
                 String[] rad_prop = s.split("\t");
                 allParticles.add(
                         new Particle(
+                                index,
                                 Double.parseDouble(rad_prop[0]),
                                 Double.parseDouble(rad_prop[1]),
-                                index));
+                                rmin)
+                        );
                 index++;
             }
             br.close();
