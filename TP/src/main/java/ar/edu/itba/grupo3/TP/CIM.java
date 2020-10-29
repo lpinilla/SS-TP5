@@ -172,24 +172,24 @@ public class CIM {
                 neighborCells[1] = moveCell(heads.get(cell % m), 0,  l); //up
                 neighborCells[2] = moveCell(heads.get((cell + 1) % m),0, l); //upper right
             }
-            //last column
-            if(cell % m == m -1){
-                neighborCells[2] = moveCell(heads.get(cell + 1), l, 0); //upper right
-                neighborCells[3] = moveCell(heads.get((cell / m) * m), l, 0); //right
-                neighborCells[4] = moveCell(heads.get(((cell / m) * m) - m), l, 0); //bottom right
-            }
+            ////last column
+            //if(cell % m == m -1){
+            //    neighborCells[2] = moveCell(heads.get(cell + 1), l, 0); //upper right
+            //    neighborCells[3] = moveCell(heads.get((cell / m) * m), l, 0); //right
+            //    neighborCells[4] = moveCell(heads.get(((cell / m) * m) - m), l, 0); //bottom right
+            //}
             //first row
             if(cell < m){
                 neighborCells[4] = moveCell(heads.get(cell+1 + m * m - m), 0, - l);
             }
-            //top right corner
-            if(cell == m * m -1){
-                neighborCells[2] = moveCell(heads.get(0), l, l); //upper right
-            }
-            //bottom right corner
-            if(cell == m - 1){
-                neighborCells[4] = moveCell(heads.get(m * m - m), l ,  - l);
-            }
+            ////top right corner
+            //if(cell == m * m -1){
+            //    neighborCells[2] = moveCell(heads.get(0), l, l); //upper right
+            //}
+            ////bottom right corner
+            //if(cell == m - 1){
+            //    neighborCells[4] = moveCell(heads.get(m * m - m), l ,  - l);
+            //}
         }
         return Arrays.stream(neighborCells).filter(Objects::nonNull).collect(Collectors.toList());
     }
