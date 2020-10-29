@@ -126,6 +126,10 @@ public class Particle implements Comparable<Particle> {
         this.particlesSameCellList.add(this);
     }
 
+    public Particle(Double radius, Integer id){
+        new Particle(radius, 1.0d, id);
+    }
+
 
     public Particle(Double radius, Double mass, Integer id){
         this.radius = radius;

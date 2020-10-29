@@ -30,9 +30,8 @@ public class FileHandler {
     }
 
     public SimInfo loadData(){
-        return loadStaticFile();
-        //SimInfo info = loadStaticFile();
-        //return loadDynamicFile(info);
+        SimInfo info = loadStaticFile();
+        return loadDynamicFile(info);
     }
 
     public SimInfo loadStaticFile()  {
@@ -40,32 +39,19 @@ public class FileHandler {
         List<Particle> allParticles = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(staticInputFile)));
-            String s;
-            ret.setN(Integer.parseInt(br.readLine())); //N
-            ret.setL(Integer.parseInt(br.readLine())); //L
+            ret.setN(Integer.parseInt(br.readLine()));      //N
+            ret.setL(Integer.parseInt(br.readLine()));      //L
             ret.setDmax(Double.parseDouble(br.readLine())); //dmax
-            double rmin = Double.parseDouble(br.readLine()); //rmin
-            ret.setRmin(rmin);
+            ret.setRmin(Double.parseDouble(br.readLine())); //rmin
             ret.setRmax(Double.parseDouble(br.readLine())); //rmax
-            ret.setTau(Double.parseDouble(br.readLine())); //tau
-            ret.setBetha(Double.parseDouble(br.readLine())); //betha
-            //particles
-            int index = 0;
-            while ((s = br.readLine()) != null) {
-                String[] rad_prop = s.split("\t");
-                allParticles.add(
-                        new Particle(
-                                index,
-                                Double.parseDouble(rad_prop[0]),
-                                Double.parseDouble(rad_prop[1]),
-                                rmin)
-                        );
-                index++;
-            }
+            ret.setTau(Double.parseDouble(br.readLine()));  //tau
+            ret.setBetha(Double.parseDouble(br.readLine()));//betha
             br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        //cargar las partículas
+        for(int i = 0; i < ret.getN(); i++) allParticles.add(new Particle(ret.getRmin(), i));
         ret.setAllParticles(allParticles);
         return ret;
     }
@@ -74,7 +60,7 @@ public class FileHandler {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(dynamicInputfile)));
             String s;
-            int time = Integer.parseInt(br.readLine()); //ignore first line
+            int ignored = Integer.parseInt(br.readLine()); //ignore first line
             //particles
             int index = 0;
             Particle aux;
@@ -83,8 +69,6 @@ public class FileHandler {
                 aux = info.getAllParticles().get(index);
                 aux.setX(Double.parseDouble(position[0]));
                 aux.setY(Double.parseDouble(position[1]));
-                aux.setVx(Double.parseDouble(position[2]));
-                aux.setVy(Double.parseDouble(position[3]));
                 index++;
             }
             br.close();
