@@ -24,10 +24,13 @@ public class GenerateInput {
      * @param N cantidad de partículas
      * @param rmin radio mínimo de las partículas
      * @param rmax radio máximo de las partículas
+     * @param dmax dmax rapidez máxima
+     * @param tau tau tiempo hasta alcanzar la velocidad máxima
+     * @param betha factor que define la relación entre la rapidez y el radio actual
      */
     public void generateInputs(int N, double rmin, double rmax, double dmax, double tau, double betha) {
         //if(!checkParams(N, L)) return;
-        double l = 5d * (rmin + rmax) / 2;
+        double l = 10d * (rmin + rmax) / 2;
         generateStaticFile(N, l, rmin, rmax, dmax, tau, betha);
         generateDynamic(N, l, rmin);
     }

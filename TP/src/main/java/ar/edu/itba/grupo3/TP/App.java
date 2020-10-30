@@ -1,13 +1,10 @@
 package ar.edu.itba.grupo3.TP;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        GenerateInput generateInput = new GenerateInput();
+        generateInput.generateInputs(40, 0.15, 0.32, 1.55, 0.5, 1);
     }
 }
