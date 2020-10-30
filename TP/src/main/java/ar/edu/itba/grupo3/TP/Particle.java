@@ -14,22 +14,15 @@ public class Particle implements Comparable<Particle> {
     private Double y; //y position of particle
     private Double prevY;
     private Double vx; //x velocity of particle
-    private Double prevVx;
     private Double vy; //y velocity of particle
-    private Double prevVy;
-    private Double ax; //aceleración de la partícula
-    private Double prevAx;
-    private Double futAx;
-    private Double ay; //aceleración de la partícula
-    private Double prevAy;
-    private Double futAy;
     private Double radius; //radius of particle
     private Double mass; //mass of particle
     private Double angle; //value of angle
     private Double targetX;
     private Double targetY;
     private Set<Particle> neighbours; //list of neighbours
-    private final double speed = 0.03;
+    private Double speed;
+    private boolean collision;
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
@@ -48,128 +41,35 @@ public class Particle implements Comparable<Particle> {
         this.angle = angle;
         this.prevX = 0.0;
         this.prevY = 0.0;
-        this.prevVx = 0.0;
-        this.prevVy = 0.0;
-        this.ax = 0d;
-        this.ay = 0d;
-        this.prevAx = 0.0;
-        this.prevAy = 0.0;
-        this.futAx = 0.0;
-        this.futAy = 0.0;
+        this.speed = 0d;
+        this.collision = false;
         this.neighbours = new TreeSet<>();
         this.particlesSameCellList = new LinkedList<>();
         this.particlesSameCellList.add(this);
     }
-
 
     public Particle(int id, Double x, Double y, Double radius) {
-        this.id = 0;
-        this.x = x;
-        this.y = y;
-        this.vx = 0d;
-        this.vy = 0d;
-        this.mass = 0d;
-        this.radius = radius;
-        this.angle = 0d;
-        this.prevX = 0.0;
-        this.prevY = 0.0;
-        this.prevVx = 0.0;
-        this.prevVy = 0.0;
-        this.ax = 0d;
-        this.ay = 0d;
-        this.prevAx = 0.0;
-        this.prevAy = 0.0;
-        this.futAx = 0.0;
-        this.futAy = 0.0;
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
+        new Particle(id, x, y,  0d, 0d, radius, 1d, 0d);
     }
-
-
-    public Particle(Double x, Double y, Double vx, Double vy, Double ax, Double ay, Double radius, Double mass, Double angle) {
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.ax = ax;
-        this.ay = ay;
-        this.mass = mass;
-        this.radius = radius;
-        this.angle = angle;
-        this.prevX = 0.0;
-        this.prevY = 0.0;
-        this.prevVx = 0.0;
-        this.prevVy = 0.0;
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
-    }
-
 
     public Particle(Double x, Double y, Double vx, Double vy, Double radius, Double mass, Double angle) {
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.ax = 0d;
-        this.ay = 0d;
-        this.mass = mass;
-        this.radius = radius;
-        this.angle = angle;
-        this.prevX = 0.0;
-        this.prevY = 0.0;
-        this.prevVx = 0.0;
-        this.prevVy = 0.0;
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
+        new Particle(0, x, y, vx, vy, radius, mass, angle);
     }
 
     public Particle(Double radius, Integer id){
         new Particle(radius, 1.0d, id);
     }
 
-
     public Particle(Double radius, Double mass, Integer id){
-        this.radius = radius;
-        this.angle = 0.0;
-        this.mass = mass;
-        this.id = id;
-        this.x = -1.0; //placeholder
-        this.vx = 0.0;
-        this.vy = 0.0;
-        this.y = -1.0; //placeholder
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
+        new Particle(id, 0d, 0d, 0d, 0d, radius, mass, 0d);
     }
 
     public Particle(Double radius, Double angle, Double mass, Integer id){
-        this.radius = radius;
-        this.angle = angle;
-        this.mass = mass;
-        this.id = id;
-        this.x = -1.0; //placeholder
-        this.vx = 0.0;
-        this.vy = 0.0;
-        this.y = -1.0; //placeholder
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
+        new Particle(id, 0d, 0d, 0d, 0d, radius, mass, angle);
     }
 
-
     public Particle(Double x, Double y, Double r, Double angle){
-        this.radius = r;
-        this.angle = angle;
-        this.x = x; //placeholder
-        this.vx = 0.0;
-        this.vy = 0.0;
-        this.y = y; //placeholder
-        this.neighbours = new TreeSet<>();
-        this.particlesSameCellList = new LinkedList<>();
-        this.particlesSameCellList.add(this);
+        new Particle(0, x, y, 0d, 0d,  r, 1d, angle);
     }
 
     public String toString(){
@@ -258,24 +158,26 @@ public class Particle implements Comparable<Particle> {
         this.y = y;
     }
 
-    public void setVx(double vx){
-        this.prevVx = this.getVx();
-        this.vx = vx;
+    public void updateRadius(double rmax, double tau, double deltaT){
+        setRadius(this.radius + rmax * deltaT / tau);
     }
 
-    public void setVy(double vy){
-        this.prevVy = this.getVy();
-        this.vy = vy;
+    public void updateSpeed(double dmax, double rmin, double rmax, double beta){
+        if(this.radius <= rmax) {
+            setSpeed(dmax * Math.pow(((this.radius - rmin) / (rmax - rmin)), beta));
+        }else{
+            setSpeed(dmax);
+        }
     }
 
-    public void setAx(double ax){
-        this.prevAx = this.getAx();
-        this.ax = ax;
-    }
-
-    public void setAy(double ay){
-        this.prevAy = this.getAy();
-        this.ay = ay;
+    public void updatePosition(double deltaT, double rmin, double ve){
+        if(collision){
+            setRadius(rmin);
+            setSpeed(ve);
+        }else {
+            setX(this.x + vx * deltaT);
+            setY(this.y + vy * deltaT);
+        }
     }
 
 

@@ -45,7 +45,7 @@ public class FileHandler {
             ret.setRmin(Double.parseDouble(br.readLine())); //rmin
             ret.setRmax(Double.parseDouble(br.readLine())); //rmax
             ret.setTau(Double.parseDouble(br.readLine()));  //tau
-            ret.setBetha(Double.parseDouble(br.readLine()));//betha
+            ret.setBeta(Double.parseDouble(br.readLine())); //beta
             br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());

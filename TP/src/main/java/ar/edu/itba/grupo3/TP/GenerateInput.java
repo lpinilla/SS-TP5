@@ -26,16 +26,22 @@ public class GenerateInput {
      * @param rmax radio máximo de las partículas
      * @param dmax dmax rapidez máxima
      * @param tau tau tiempo hasta alcanzar la velocidad máxima
-     * @param betha factor que define la relación entre la rapidez y el radio actual
+     * @param beta factor que define la relación entre la rapidez y el radio actual
      */
-    public void generateInputs(int N, double rmin, double rmax, double dmax, double tau, double betha) {
+    public void generateInputs(int N,
+                               double rmin, double rmax,
+                               double dmax, double ve,
+                               double tau, double beta) {
         //if(!checkParams(N, L)) return;
         double l = 10d * (rmin + rmax) / 2;
-        generateStaticFile(N, l, rmin, rmax, dmax, tau, betha);
+        generateStaticFile(N, l, rmin, rmax, dmax, ve, tau, beta);
         generateDynamic(N, l, rmin);
     }
 
-    private void generateStaticFile(int N, double L, double rmin, double rmax, double dmax, double tau, double betha){
+    private void generateStaticFile(int N, double L,
+                                    double rmin, double rmax,
+                                    double dmax, double ve,
+                                    double tau, double beta){
         try {
             OutputStream outputStream = new FileOutputStream(new File("resources/RandomStaticInput.txt"));
             PrintWriter writer = new PrintWriter(outputStream);
@@ -44,8 +50,9 @@ public class GenerateInput {
             writer.println(rmin);
             writer.println(rmax);
             writer.println(dmax);
+            writer.println(ve);
             writer.println(tau);
-            writer.println(betha);
+            writer.println(beta);
             writer.flush();
             writer.close();
             outputStream.close();
