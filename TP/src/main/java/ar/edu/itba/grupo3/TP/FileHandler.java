@@ -104,6 +104,29 @@ public class FileHandler {
         }
     }
 
+    public void saveDynamicForAnimation(SimInfo i, int n) {
+        String fileOutputPath = "resources/dynamic.txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileOutputPath), true) );
+            writer.write(Integer.toString(i.getN())); //cant particle
+            writer.newLine();
+            writer.write(Integer.toString(0)); //time
+            writer.newLine();
+            double aux;
+            for(Particle p : i.getAllParticles()){
+                String builder =
+                        String.format(Locale.US, "%6.7e", p.getX()) + "    " +
+                                String.format(Locale.US, "%6.7e", p.getY());
+                writer.write(builder);
+                writer.newLine();
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void savePosition(List<Particle> particles, String filename){
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(
