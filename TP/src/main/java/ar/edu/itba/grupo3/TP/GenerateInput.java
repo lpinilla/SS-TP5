@@ -79,8 +79,7 @@ public class GenerateInput {
                         String.format(Locale.US, "%6.7e", xpos) + "\t" +
                         String.format(Locale.US, "%6.7e", ypos)
                 );
-                Particle p=new Particle(xpos, ypos, 0d, 0d, rmin, 1d, 0d);
-                generated.add(p);
+                generated.add(new Particle(i, xpos, ypos, 0d, 0d, rmin, 1d, 0d));
             }
             writer.flush();
             writer.close();

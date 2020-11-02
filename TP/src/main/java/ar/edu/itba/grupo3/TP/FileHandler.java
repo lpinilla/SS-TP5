@@ -13,20 +13,16 @@ import java.util.Locale;
 public class FileHandler {
 
     private String basePath;
-    private String staticInputFile;
-    private String dynamicInputfile;
+    private String staticInputFile = "RandomStaticInput";
+    private String dynamicInputfile = "RandomDynamicInput";
     private final String dynamicFile = "dynamicOutput";
     private final String velocity = "velocity";
     private final String position = "position";
 
     public FileHandler(String basePath){
         this.basePath = basePath;
-        staticInputFile = dynamicInputfile = "";
-    }
-
-    public FileHandler(String staticfile, String dynamicInputfile){
-        this.staticInputFile = staticfile;
-        this.dynamicInputfile = dynamicInputfile;
+        staticInputFile = basePath + "/" + staticInputFile + ".txt";
+        dynamicInputfile = basePath + "/" + dynamicInputfile + ".txt";
     }
 
     public SimInfo loadData(){
@@ -39,19 +35,19 @@ public class FileHandler {
         List<Particle> allParticles = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(staticInputFile)));
-            ret.setN(Integer.parseInt(br.readLine()));      //N
-            ret.setL(Integer.parseInt(br.readLine()));      //L
-            ret.setDmax(Double.parseDouble(br.readLine())); //dmax
-            ret.setRmin(Double.parseDouble(br.readLine())); //rmin
-            ret.setRmax(Double.parseDouble(br.readLine())); //rmax
-            ret.setTau(Double.parseDouble(br.readLine()));  //tau
-            ret.setBeta(Double.parseDouble(br.readLine())); //beta
+            ret.setN(Integer.parseInt(br.readLine()));          //N
+            ret.setL((int) Double.parseDouble(br.readLine()));  //L
+            ret.setDmax(Double.parseDouble(br.readLine()));     //dmax
+            ret.setRmin(Double.parseDouble(br.readLine()));     //rmin
+            ret.setRmax(Double.parseDouble(br.readLine()));     //rmax
+            ret.setTau(Double.parseDouble(br.readLine()));      //tau
+            ret.setBeta(Double.parseDouble(br.readLine()));     //beta
             br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         //cargar las partículas
-        for(int i = 0; i < ret.getN(); i++) allParticles.add(new Particle(ret.getRmin(), i));
+        for(int i = 0; i < ret.getN(); i++) allParticles.add(new Particle(ret.getRmin(), 1d, i));
         ret.setAllParticles(allParticles);
         return ret;
     }
@@ -60,7 +56,7 @@ public class FileHandler {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(dynamicInputfile)));
             String s;
-            int ignored = Integer.parseInt(br.readLine()); //ignore first line
+            br.readLine(); //ignore first line
             //particles
             int index = 0;
             Particle aux;
@@ -104,19 +100,20 @@ public class FileHandler {
         }
     }
 
-    public void saveDynamicForAnimation(SimInfo i, int n) {
-        String fileOutputPath = "resources/dynamic.txt";
+    public void saveDynamicForAnimation(String filename, SimInfo info, int i, boolean ovitoGraph) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileOutputPath), true) );
-            writer.write(Integer.toString(i.getN())); //cant particle
+            BufferedWriter writer = new BufferedWriter(new FileWriter(
+                    new File(basePath + "/" + filename + ".txt"), true));
+            if(ovitoGraph){
+                writer.write(Integer.toString(info.getN())); //cant particle
+                writer.newLine();
+            }
+            writer.write(String.valueOf(i)); //time
             writer.newLine();
-            writer.write(Integer.toString(0)); //time
-            writer.newLine();
-            double aux;
-            for(Particle p : i.getAllParticles()){
+            for(Particle p : info.getAllParticles()){
                 String builder =
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                                String.format(Locale.US, "%6.7e", p.getY());
+                        String.format(Locale.US, "%6.7e", p.getY());
                 writer.write(builder);
                 writer.newLine();
             }
@@ -145,45 +142,7 @@ public class FileHandler {
         }
     }
 
-
-    public void savePositionIndexed(List<Particle> particles, String filename, long i){
-        try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter(
-                    new File(basePath + "/" + filename + ".tsv"), true));
-            writer.write(String.valueOf(i));
-            writer.newLine();
-            for(Particle p : particles){
-                String builder =
-                        String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                                String.format(Locale.US, "%6.7e", p.getY());
-                writer.write(builder);
-                writer.newLine();
-            }
-            writer.flush();
-            writer.close();
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-
-    public void saveVelocity(List<Particle> particles, String filename){
-        try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter(
-                    new File(basePath + "/" + filename + ".tsv"), true));
-            for(Particle p : particles){
-                String builder = String.format(Locale.US, "%6.7e", p.getVx()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getVy());
-                writer.write(builder);
-                writer.newLine();
-            }
-            writer.flush();
-            writer.close();
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
+    public void saveVelocity(List<Particle> particles, String filename){ saveVelocityIndexed(particles, filename, 0); }
 
     public void saveVelocityIndexed(List<Particle> particles, String filename, long i){
         try{
