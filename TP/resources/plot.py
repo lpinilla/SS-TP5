@@ -8,7 +8,7 @@ vy = []
 #particle_id = 15
 #radius = 1.0
 #M = 13
-L = 3
+L = 10
 
 with open('RandomDynamicInput.txt') as f:
     next(f)
@@ -20,12 +20,12 @@ f.close()
 
 fig, ax = plt.subplots()
 plt.plot(x[0:], y[0:], '.', color='red', markersize=5, label='test')
-#plt.plot(x[1:], y[1:], '.', color='blue', markersize=45)
+plt.plot(x[1], y[1], '.', color='blue', markersize=5)
 #plt.plot(x[5], y[5], '.', color='yellow', markersize=7, label='Selected')
 
 #Paredes
-right_rect = plt.Rectangle((2.5, 0), 0.5, 2.5, color='blue', fill=False)
-left_rect = plt.Rectangle((-0.5, 0), 0.5, 2.5, color='blue', fill=False)
+right_rect = plt.Rectangle((L, 0), 0.5, L, color='blue', fill=False)
+left_rect = plt.Rectangle((-0.5, 0), 0.5, L, color='blue', fill=False)
 plt.gcf().gca().add_artist(right_rect)
 plt.gcf().gca().add_artist(left_rect)
 
@@ -45,7 +45,7 @@ plt.title('testing')
 plt.legend()
 
 #cambiando el tamaño de la grilla la grilla
-ax.set_xlim(-L, L)
+ax.set_xlim(-L * 0.5, L * 1.5 )
 ax.set_ylim(0, L)
 ax.grid(linestyle='-', linewidth='0.5')
 #ax.xaxis.set_major_locator(MultipleLocator(particle_id))

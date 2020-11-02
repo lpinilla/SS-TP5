@@ -87,9 +87,9 @@ public class FileHandler {
                 aux = Math.sqrt(Math.pow(p.getVx(), 2)+Math.pow(p.getVy(), 2));
                 String builder =
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                                String.format(Locale.US, "%6.7e", p.getY()) + "    " +
-                                String.format(Locale.US, "%6.7e", p.getRadius()) + "    " +
-                                String.format(Locale.US, "%6.7e", aux);
+                        String.format(Locale.US, "%6.7e", p.getY()) + "    " +
+                        String.format(Locale.US, "%6.7e", p.getRadius()) + "    " +
+                        String.format(Locale.US, "%6.7e", aux);
                 writer.write(builder);
                 writer.newLine();
             }

@@ -28,12 +28,8 @@ public class GenerateInput {
      * @param tau tau tiempo hasta alcanzar la velocidad máxima
      * @param beta factor que define la relación entre la rapidez y el radio actual
      */
-    public void generateInputs(int N,
-                               double rmin, double rmax,
-                               double dmax, double ve,
-                               double tau, double beta) {
-        //if(!checkParams(N, L)) return;
-        double l = 10d * (rmin + rmax) / 2;
+    public void generateInputs(int N, int L, double rmin, double rmax, double dmax, double ve, double tau, double beta){
+        int l = L;
         generateStaticFile(N, l, rmin, rmax, dmax, ve, tau, beta);
         generateDynamic(N, l, rmin);
     }

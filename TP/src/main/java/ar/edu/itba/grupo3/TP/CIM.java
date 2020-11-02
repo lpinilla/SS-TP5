@@ -21,98 +21,25 @@ public class CIM {
     private boolean periodicEnvironment;
     private final boolean measureRadius;
     private long duration;
+    private int height;
 
-    public CIM(int n, float l, float rc, int m, boolean periodicEnvironment, boolean measureRadius) throws IllegalArgumentException {
+    public CIM(SimInfo simInfo, int m, int height, boolean periodicEnvironment, boolean measureRadius)
+            throws IllegalArgumentException {
         if (n <= 0 || l <= 0 || rc <= 0 || m <= 0) throw new IllegalArgumentException("incorrect arguments");
         if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
         this.heads = new TreeMap<>();
-        this.allParticles = new ArrayList<Particle>() {
-            @Override
-            public boolean add(Particle p) {
-                super.add(p);
-                allParticles.sort(Comparator.comparing(Particle::getId));
-                return true;
-            }
-        };
-        this.n = n;
-        this.l = l;
-        this.rc = rc;
+        this.allParticles = new ArrayList<>();
+        allParticles.addAll(simInfo.getAllParticles());
+        allParticles.sort(Comparator.comparing(Particle::getId));
+        this.n = simInfo.getN();
+        this.l = simInfo.getL();
+        this.rc = simInfo.getRmax();
         this.m = m;
         this.cellSize = l / m;
         this.periodicEnvironment = periodicEnvironment;
         this.measureRadius = measureRadius;
         this.duration=0;
-    }
-
-    public CIM(int m, double rc, boolean periodicEnvironment, boolean measureRadius, String staticFilePath) throws IllegalArgumentException {
-        if (staticFilePath.isEmpty()) throw new IllegalArgumentException("empty path");
-        if (m <= 0 || rc <= 0) throw new IllegalArgumentException("Wrong arguments");
-        this.heads = new TreeMap<>();
-        this.allParticles = new ArrayList<Particle>() {
-            @Override
-            public boolean add(Particle p) {
-                super.add(p);
-                allParticles.sort(Comparator.comparing(Particle::getId));
-                return true;
-            }
-        };
-        this.rc = rc;
-        this.m = m;
-        this.periodicEnvironment = periodicEnvironment;
-        this.measureRadius = measureRadius;
-        loadStaticFile(staticFilePath);
-        this.cellSize = l / m;
-        if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
-    }
-
-    public void loadStaticFile(String path)  {
-        if (path.isEmpty()) return;
-        File file = new File(path);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String s;
-            this.n = Integer.parseInt(br.readLine());
-            this.l = Integer.parseInt(br.readLine());
-            //particles
-            int index = 0;
-            while ((s = br.readLine()) != null) {
-                String[] rad_prop = s.split(" {3}");
-                this.allParticles.add(
-                        new Particle(
-                                Double.parseDouble(rad_prop[0]),
-                                Double.parseDouble(rad_prop[1]),
-                                index));
-                index++;
-            }
-            br.close();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void loadDynamicFile(String path) {
-        if (path.isEmpty()) return;
-        File file = new File(path);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String s;
-            int time = Integer.parseInt(br.readLine()); //ignore first line
-            //particles
-            int index = 0;
-            Particle aux;
-            while ((s = br.readLine()) != null) {
-                String[] position = s.split(" {3}");
-                aux = this.allParticles.get(index);
-                aux.setX(Double.parseDouble(position[0]));
-                aux.setY(Double.parseDouble(position[1]));
-                putInCell(aux);
-                index++;
-            }
-            br.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        this.height = height;
     }
 
     private void putInCell(Particle p) {
@@ -169,8 +96,8 @@ public class CIM {
         if(periodicEnvironment){
             //last row
             if(cell >= m * m - m){
-                neighborCells[1] = moveCell(heads.get(cell % m), 0,  l); //up
-                neighborCells[2] = moveCell(heads.get((cell + 1) % m),0, l); //upper right
+                neighborCells[1] = moveCell(heads.get(cell % m + height * m), 0,  l - (height * cellSize)); //up
+                neighborCells[2] = moveCell(heads.get((cell + 1) % m + height * m),0, l - (height * cellSize)); //upper right
             }
             ////last column
             //if(cell % m == m -1){
@@ -183,9 +110,9 @@ public class CIM {
                 neighborCells[4] = moveCell(heads.get(cell+1 + m * m - m), 0, - l);
             }
             ////top right corner
-            //if(cell == m * m -1){
-            //    neighborCells[2] = moveCell(heads.get(0), l, l); //upper right
-            //}
+            if(cell == m * m -1){
+                neighborCells[2] = moveCell(heads.get(height * m), l, l - (height * cellSize)); //upper right
+            }
             ////bottom right corner
             //if(cell == m - 1){
             //    neighborCells[4] = moveCell(heads.get(m * m - m), l ,  - l);
