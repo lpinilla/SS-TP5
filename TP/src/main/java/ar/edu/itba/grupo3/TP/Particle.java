@@ -161,7 +161,7 @@ public class Particle implements Comparable<Particle> {
             setSpeed(ve);
         } else {
             setX(this.x + vx * deltaT);
-            double y = this.y + 1 * deltaT;
+            double y = this.y + vy * deltaT;
             if(y > L) y -= h;
             setY(y);
         }

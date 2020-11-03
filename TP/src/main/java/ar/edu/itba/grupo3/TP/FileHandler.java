@@ -38,9 +38,10 @@ public class FileHandler {
             ret.setN(Integer.parseInt(br.readLine()));          //N
             ret.setL(Double.parseDouble(br.readLine()));        //L
             ret.setH(Double.parseDouble(br.readLine()));        //H
-            ret.setDmax(Double.parseDouble(br.readLine()));     //dmax
             ret.setRmin(Double.parseDouble(br.readLine()));     //rmin
             ret.setRmax(Double.parseDouble(br.readLine()));     //rmax
+            ret.setDmax(Double.parseDouble(br.readLine()));     //dmax
+            ret.setVe(Double.parseDouble(br.readLine()));       //ve
             ret.setTau(Double.parseDouble(br.readLine()));      //tau
             ret.setBeta(Double.parseDouble(br.readLine()));     //beta
             br.close();

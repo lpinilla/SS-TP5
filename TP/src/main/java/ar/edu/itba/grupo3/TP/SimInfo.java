@@ -24,13 +24,13 @@ public class SimInfo {
     public SimInfo(){
         this.N = 0;
         this.L = 0;
+        this.H = 0d;
         this.rmin = 0d;
         this.rmax = 0d;
         this.dmax = 0d;
         this.ve = 0d;
         this.tau  = 0d;
         this.beta = 0d;
-        this.H = 0d;
         this.allParticles = new ArrayList<>();
     }
 
