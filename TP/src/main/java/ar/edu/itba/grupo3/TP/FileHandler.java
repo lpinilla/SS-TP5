@@ -36,7 +36,8 @@ public class FileHandler {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(staticInputFile)));
             ret.setN(Integer.parseInt(br.readLine()));          //N
-            ret.setL((int) Double.parseDouble(br.readLine()));  //L
+            ret.setL(Double.parseDouble(br.readLine()));        //L
+            ret.setH(Double.parseDouble(br.readLine()));        //H
             ret.setDmax(Double.parseDouble(br.readLine()));     //dmax
             ret.setRmin(Double.parseDouble(br.readLine()));     //rmin
             ret.setRmax(Double.parseDouble(br.readLine()));     //rmax

@@ -14,27 +14,29 @@ public class CIM {
     private Map<Integer, Particle> heads;
     private List<Particle> allParticles;
     private int n; //total number of particles
-    private float l; //total length
+    private double l; //total length
     private double rc; //Force radius
     private int m; //number of cells per side
-    private final float cellSize;//size of cell
+    private double cellSize;//size of cell
     private boolean periodicEnvironment;
     private final boolean measureRadius;
     private long duration;
-    private int height;
+    private double height;
 
-    public CIM(SimInfo simInfo, int m, int height, boolean periodicEnvironment, boolean measureRadius)
+    public CIM(SimInfo simInfo, int m, double height, boolean periodicEnvironment, boolean measureRadius)
             throws IllegalArgumentException {
-        if (n <= 0 || l <= 0 || rc <= 0 || m <= 0) throw new IllegalArgumentException("incorrect arguments");
+        if (    simInfo.getN() <= 0 || simInfo.getL() <= 0 || m <= 0){
+            throw new IllegalArgumentException("incorrect arguments");
+        }
+        this.n = simInfo.getN();
+        this.l = simInfo.getL();
+        this.m = m;
+        this.rc = simInfo.getRmax();
         if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
         this.heads = new TreeMap<>();
         this.allParticles = new ArrayList<>();
         allParticles.addAll(simInfo.getAllParticles());
         allParticles.sort(Comparator.comparing(Particle::getId));
-        this.n = simInfo.getN();
-        this.l = simInfo.getL();
-        this.rc = simInfo.getRmax();
-        this.m = m;
         this.cellSize = l / m;
         this.periodicEnvironment = periodicEnvironment;
         this.measureRadius = measureRadius;

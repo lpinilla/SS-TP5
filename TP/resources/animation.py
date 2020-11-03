@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
 
 #follow = 15
+size = 10
+h = 2.5
 
 times = [
     {
     't' : 0,
     'x' : [],
-    'y' : []#,
-    #'v' : []
+    'y' : []
     }
 ]
 
@@ -42,10 +43,8 @@ times = times[1:]
 #ax.xaxis.set_major_locator(MultipleLocator(10))
 #ax.yaxis.set_major_locator(MultipleLocator(10))
 
-size = 1 * (10 ** 11.5)
-
 def init():
-    ax.set_ylim(-size, size)
+    ax.set_ylim(0, size)
     ax.set_xlim(-size, size)
     ax.grid(linestyle='-', linewidth='0.5')
     del xdata[:]
@@ -59,6 +58,9 @@ part, = ax.plot([], [], '.', color="red", markersize=6)
 ax.grid()
 xdata, ydata = [], []
 
+rect = plt.Rectangle((-size,size - h), 2 * size, h, color='yellow', fill=False)
+plt.gcf().gca().add_artist(rect)
+
 def animate(i):
     x = times[i]['x'][0:]
     y = times[i]['y'][0:]
@@ -69,6 +71,6 @@ def animate(i):
     #frame = str(i)
 
 
-animation = ani.FuncAnimation(fig, animate, frames= len(times), interval=1, repeat=False, init_func=init)
+animation = ani.FuncAnimation(fig, animate, frames= len(times), interval=1, repeat=True, init_func=init)
 plt.show()
 #animation.save('poc.gif', writer='imagemagick')

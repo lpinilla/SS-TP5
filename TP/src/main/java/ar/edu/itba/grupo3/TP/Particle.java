@@ -155,13 +155,15 @@ public class Particle implements Comparable<Particle> {
         }
     }
 
-    public void updatePosition(double deltaT, double rmin, double ve) {
+    public void updatePosition(double deltaT, double rmin, double ve, double h, double L, double cellSize) {
         if (collision) {
             setRadius(rmin);
             setSpeed(ve);
         } else {
             setX(this.x + vx * deltaT);
-            setY(this.y + vy * deltaT);
+            double y = this.y + 1 * deltaT;
+            if(y > L) y -= h;
+            setY(y);
         }
     }
 

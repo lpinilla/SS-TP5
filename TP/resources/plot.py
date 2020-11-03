@@ -45,10 +45,25 @@ plt.title('testing')
 plt.legend()
 
 #cambiando el tamaño de la grilla la grilla
-ax.set_xlim(-L * 0.5, L * 1.5 )
-ax.set_ylim(0, L)
+#ax.set_xlim(-L * 0.5, L * 1.5 )
+#ax.set_ylim(0, L)
+ax.set_xlim(-0.5,L + 0.5)
+ax.set_ylim(-0.5,L + 0.5)
+#ax.set_ylim(0,L)
 ax.grid(linestyle='-', linewidth='0.5')
-#ax.xaxis.set_major_locator(MultipleLocator(particle_id))
-#ax.yaxis.set_major_locator(MultipleLocator(particle_id))
+#ax.xaxis.set_major_locator(MultipleLocator(0))
+#ax.yaxis.set_major_locator(MultipleLocator(0))
+
+
+#grilla de m's
+rects = []
+M = 10
+positions = [x * (L/M) for x in range(0,M)]
+for i in positions:
+    for j in positions:
+        rects.append(plt.Rectangle((i, j), L/M, L/M, color='yellow', fill=False))
+for r in rects:
+    plt.gcf().gca().add_artist(r)
+
 plt.show()
 #plt.savefig('vecinos_de_0.png')
