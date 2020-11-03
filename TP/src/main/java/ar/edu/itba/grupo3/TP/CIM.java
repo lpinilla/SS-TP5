@@ -21,9 +21,9 @@ public class CIM {
     private boolean periodicEnvironment;
     private final boolean measureRadius;
     private long duration;
-    private double height;
+    private double width;
 
-    public CIM(SimInfo simInfo, int m, double height, boolean periodicEnvironment, boolean measureRadius)
+    public CIM(SimInfo simInfo, int m, double width, boolean periodicEnvironment, boolean measureRadius)
             throws IllegalArgumentException {
         if (    simInfo.getN() <= 0 || simInfo.getL() <= 0 || m <= 0){
             throw new IllegalArgumentException("incorrect arguments");
@@ -31,7 +31,8 @@ public class CIM {
         this.n = simInfo.getN();
         this.l = simInfo.getL();
         this.m = m;
-        this.rc = simInfo.getRmax();
+        //this.rc = simInfo.getRmax();
+        this.rc = 0.9d;
         if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
         this.heads = new TreeMap<>();
         this.allParticles = new ArrayList<>();
@@ -41,7 +42,7 @@ public class CIM {
         this.periodicEnvironment = periodicEnvironment;
         this.measureRadius = measureRadius;
         this.duration=0;
-        this.height = height;
+        this.width = width;
     }
 
     private void putInCell(Particle p) {
@@ -81,7 +82,6 @@ public class CIM {
         return ret;
     }
 
-
     public List<Particle> getLShapeHeaders(int cell){
         Particle[] neighborCells = new Particle[5];
         neighborCells[0] = heads.get(cell);
@@ -98,8 +98,8 @@ public class CIM {
         if(periodicEnvironment){
             //last row
             if(cell >= m * m - m){
-                neighborCells[1] = moveCell(heads.get(cell % m + height * m), 0,  l - (height * cellSize)); //up
-                neighborCells[2] = moveCell(heads.get((cell + 1) % m + height * m),0, l - (height * cellSize)); //upper right
+                neighborCells[1] = moveCell(heads.get(cell % m), 0,  l); //up
+                neighborCells[2] = moveCell(heads.get((cell + 1) % m),0, l); //upper right
             }
             ////last column
             //if(cell % m == m -1){
@@ -112,8 +112,8 @@ public class CIM {
                 neighborCells[4] = moveCell(heads.get(cell+1 + m * m - m), 0, - l);
             }
             ////top right corner
-            if(cell == m * m -1){
-                neighborCells[2] = moveCell(heads.get(height * m), l, l - (height * cellSize)); //upper right
+            if(cell == (m * m + (int) width - 1)){
+                neighborCells[2] = moveCell(heads.get(0), width, l); //upper right
             }
             ////bottom right corner
             //if(cell == m - 1){
