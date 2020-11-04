@@ -144,26 +144,26 @@ public class Particle implements Comparable<Particle> {
     }
 
     public void updateRadius(double rmax, double tau, double deltaT) {
-        setRadius(this.radius + rmax * deltaT / tau);
-    }
-
-    public void updateSpeed(double dmax, double rmin, double rmax, double beta) {
-        if (this.radius <= rmax) {
-            setSpeed(dmax * Math.pow(((this.radius - rmin) / (rmax - rmin)), beta));
-        } else {
-            setSpeed(dmax);
+        if(radius > rmax){
+            radius = rmax;
+        }else{
+            setRadius(radius + rmax * deltaT / tau);
         }
     }
 
-    public void updatePosition(double deltaT, double rmin, double ve, double h, double L, double cellSize) {
+    public void updateSpeed(double dmax, double rmin, double rmax, double beta) {
+        setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
+    }
+
+    public void updatePosition(double deltaT, double rmin, double ve, double L) {
         if (collision) {
             setRadius(rmin);
             setSpeed(ve);
         } else {
+            //movimiento en x
             setX(this.x + vx * deltaT);
-            double y = this.y + vy * deltaT;
-            if(y > L) y -= h;
-            setY(y);
+            //movimiento en Y
+            setY((this.y + vy * deltaT) % L);
         }
     }
 
