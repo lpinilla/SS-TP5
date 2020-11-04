@@ -10,7 +10,7 @@ import java.util.Locale;
 
 @Getter
 @Setter
-public class FileHandler {
+public class FileHandler{
 
     private String basePath;
     private String staticInputFile = "RandomStaticInput";
@@ -30,7 +30,7 @@ public class FileHandler {
         return loadDynamicFile(info);
     }
 
-    public SimInfo loadStaticFile()  {
+    public SimInfo loadStaticFile(){
         SimInfo ret = new SimInfo();
         List<Particle> allParticles = new ArrayList<>();
         try {
@@ -49,12 +49,12 @@ public class FileHandler {
             System.out.println(e.getMessage());
         }
         //cargar las partículas
-        for(int i = 0; i < ret.getN(); i++) allParticles.add(new Particle(ret.getRmin(), 1d, i));
+        for (int i = 0; i < ret.getN(); i++) allParticles.add(new Particle(ret.getRmin(), 1d, i));
         ret.setAllParticles(allParticles);
         return ret;
     }
 
-    public SimInfo loadDynamicFile(SimInfo info) {
+    public SimInfo loadDynamicFile(SimInfo info){
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(dynamicInputfile)));
             String s;
@@ -76,21 +76,34 @@ public class FileHandler {
         return info;
     }
 
-    public void saveDynamic(String filename, SimInfo info, int i, boolean ovitoGraph) {
+    public void saveDynamic(String filename, SimInfo info, int i, boolean ovitoGraph){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + filename + ".txt"), true));
-            if(ovitoGraph){
-                writer.write(Integer.toString(info.getN())); //cant particle
+            if(ovitoGraph) {
+                writer.write(Integer.toString(info.getN() + 4)); //cant particle mas las 4 para fijar los bordes
                 writer.newLine();
             }
             writer.write(String.valueOf(i)); //time
             writer.newLine();
-            for(Particle p : info.getAllParticles()){
+            //necesito 4 particulas de radio 0 para "fijar" los bordes en ovito
+            if(ovitoGraph) {
+                writer.write(0 + "    " + 0 + "    " + 0.1 + "    " + 0);
+                writer.newLine();
+                writer.write(0 + "    " + info.getL() + "    " + 0.1 + "    " + 0);
+                writer.newLine();
+                writer.write(info.getH() + "    " + 0 + "    " + 0.1 + "    " + 0);
+                writer.newLine();
+                writer.write(info.getH() + "    " + info.getL() + "    " + 0.1 + "    " + 0);
+                writer.newLine();
+            }
+            for (Particle p : info.getAllParticles()) {
+                Double aux = Math.sqrt(Math.pow(p.getVx(), 2) + Math.pow(p.getVy(), 2));
                 String builder =
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getY()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getRadius());
+                                String.format(Locale.US, "%6.7e", p.getY()) + "    " +
+                                String.format(Locale.US, "%6.7e", p.getRadius()) + "    " +
+                                String.format(Locale.US, "%6.7e", aux);
                 writer.write(builder);
                 writer.newLine();
             }
@@ -102,10 +115,10 @@ public class FileHandler {
     }
 
     public void savePosition(List<Particle> particles, String filename){
-        try{
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + filename + ".tsv"), true));
-            for(Particle p : particles){
+            for (Particle p : particles) {
                 String builder =
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
                                 String.format(Locale.US, "%6.7e", p.getY()) + "    ";
@@ -114,20 +127,22 @@ public class FileHandler {
             }
             writer.flush();
             writer.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void saveVelocity(List<Particle> particles, String filename){ saveVelocityIndexed(particles, filename, 0); }
+    public void saveVelocity(List<Particle> particles, String filename){
+        saveVelocityIndexed(particles, filename, 0);
+    }
 
     public void saveVelocityIndexed(List<Particle> particles, String filename, long i){
-        try{
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + filename + ".tsv"), true));
             writer.write(String.valueOf(i));
             writer.newLine();
-            for(Particle p : particles){
+            for (Particle p : particles) {
                 String builder = String.format(Locale.US, "%6.7e", p.getVx()) + "    " +
                         String.format(Locale.US, "%6.7e", p.getVy());
                 writer.write(builder);
@@ -135,36 +150,36 @@ public class FileHandler {
             }
             writer.flush();
             writer.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void saveSpeed(List<Particle> l ){
-        try{
+    public void saveSpeed(List<Particle> l){
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + velocity + ".tsv"), true));
-            for(Particle p:l){
+            for (Particle p : l) {
                 writer.write(String.format(Locale.US, "%6.7e", (p.realSpeed())));
                 writer.newLine();
             }
             writer.flush();
             writer.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void saveData(String file, double idx, double data){
-        try{
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
-                    new File( basePath + "/" + file), true));
+                    new File(basePath + "/" + file), true));
             String str = idx + "    " + String.format(Locale.US, "%6.7e", data);
             writer.write(str);
             writer.newLine();
             writer.flush();
             writer.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }

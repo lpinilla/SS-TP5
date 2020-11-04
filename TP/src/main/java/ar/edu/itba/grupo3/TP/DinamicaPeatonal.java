@@ -19,6 +19,7 @@ public class DinamicaPeatonal {
         this.width = width;
         cim = new CIM(simInfo, 10, width, true, true);
         cim.recalculateHeads();
+        fileHandler.saveDynamic("testing", simInfo, 0, true);
     }
 
     public void evolveSystem(int i){
@@ -27,16 +28,21 @@ public class DinamicaPeatonal {
         for(Particle p : simInfo.getAllParticles()){
             p.findTarget();
             p.setNextTarget();
+            p.updateRadius(simInfo.getRmax(), simInfo.getTau(), deltaT,simInfo.getRmin());
             p.updateSpeed(simInfo.getDmax(), simInfo.getVe(), simInfo.getRmin(), simInfo.getRmax(), simInfo.getBeta());
-            p.updateRadius(simInfo.getRmax(), simInfo.getTau(), deltaT);
             p.updatePosition(deltaT, simInfo.getRmin(), simInfo.getL());
             Set<Particle> neighbors = p.getNeighbours();
             for(Particle n : neighbors){
                 boolean collision = p.isColliding(n);
                 p.setCollision(collision);
                 n.setCollision(collision);
+                //si choco calculo ve
+                if(collision){
+                    p.setRadius(simInfo.getRmin());
+                }
             }
+
         }
-        fileHandler.saveDynamic("testing", simInfo, i, false);
+        fileHandler.saveDynamic("testing", simInfo, i, true);
     }
 }

@@ -31,8 +31,8 @@ public class CIM {
         this.n = simInfo.getN();
         this.l = simInfo.getL();
         this.m = m;
-        //this.rc = simInfo.getRmax();
-        this.rc = 0.9d;
+        this.rc = simInfo.getRmax();
+        //this.rc = 0.9d;
         if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
         this.heads = new TreeMap<>();
         this.allParticles = new ArrayList<>();

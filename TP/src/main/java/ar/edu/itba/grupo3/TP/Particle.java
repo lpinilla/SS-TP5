@@ -155,11 +155,16 @@ public class Particle implements Comparable<Particle> {
         setVy(targetY - y);
     }
 
-    public void updateRadius(double rmax, double tau, double deltaT) {
-        if(radius > rmax){
-            radius = rmax;
-        }else{
-            setRadius(radius + rmax * deltaT / tau);
+    public void updateRadius(double rmax, double tau, double deltaT, double rmin) {
+        if(collision){
+            radius=rmin;
+        }
+        else {
+            if(radius > rmax){
+                radius = rmax;
+            }else{
+                setRadius(radius + rmax * deltaT / tau);
+            }
         }
     }
 
@@ -179,7 +184,7 @@ public class Particle implements Comparable<Particle> {
     }
 
     public boolean isColliding(Particle p2){
-        return distanceToParticle(p2) > (radius + p2.radius);
+        return distanceToParticle(p2) < (radius + p2.radius);
     }
 
 
