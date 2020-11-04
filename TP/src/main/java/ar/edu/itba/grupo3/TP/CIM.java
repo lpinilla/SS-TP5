@@ -25,7 +25,7 @@ public class CIM {
 
     public CIM(SimInfo simInfo, int m, double width, boolean periodicEnvironment, boolean measureRadius)
             throws IllegalArgumentException {
-        if (    simInfo.getN() <= 0 || simInfo.getL() <= 0 || m <= 0){
+        if (simInfo.getN() <= 0 || simInfo.getL() <= 0 || m <= 0){
             throw new IllegalArgumentException("incorrect arguments");
         }
         this.n = simInfo.getN();

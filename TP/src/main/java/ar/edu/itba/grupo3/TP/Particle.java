@@ -42,6 +42,7 @@ public class Particle implements Comparable<Particle> {
         this.prevX = 0.0;
         this.prevY = 0.0;
         this.speed = 0d;
+        this.targetX = this.targetY = 0d;
         this.collision = false;
         this.neighbours = new TreeSet<>();
         this.particlesSameCellList = new LinkedList<>();
@@ -143,6 +144,17 @@ public class Particle implements Comparable<Particle> {
         this.y = y;
     }
 
+    public void findTarget(){
+        setTargetX(x);
+        setTargetY(y + 1d);
+    }
+
+    public void setNextTarget(){
+        //ifCollision
+        setVx(targetX - x);
+        setVy(targetY - y);
+    }
+
     public void updateRadius(double rmax, double tau, double deltaT) {
         if(radius > rmax){
             radius = rmax;
@@ -151,20 +163,23 @@ public class Particle implements Comparable<Particle> {
         }
     }
 
-    public void updateSpeed(double dmax, double rmin, double rmax, double beta) {
-        setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
+    public void updateSpeed(double dmax, double ve, double rmin, double rmax, double beta) {
+        if(collision){
+            setSpeed(ve);
+        }else{
+            setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
+        }
     }
 
-    public void updatePosition(double deltaT, double rmin, double ve, double L) {
-        if (collision) {
-            setRadius(rmin);
-            setSpeed(ve);
-        } else {
-            //movimiento en x
-            setX(this.x + vx * deltaT);
-            //movimiento en Y
-            setY((this.y + vy * deltaT) % L);
-        }
+    public void updatePosition(double deltaT, double rmin, double L) {
+        //movimiento en x
+        setX(this.x + vx * deltaT);
+        //movimiento en Y
+        setY((this.y + vy * deltaT) % L);
+    }
+
+    public boolean isColliding(Particle p2){
+        return distanceToParticle(p2) > (radius + p2.radius);
     }
 
 
