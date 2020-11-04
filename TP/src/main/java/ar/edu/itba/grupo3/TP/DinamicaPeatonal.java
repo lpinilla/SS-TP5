@@ -37,6 +37,6 @@ public class DinamicaPeatonal {
                 n.setCollision(collision);
             }
         }
-        fileHandler.saveDynamicForAnimation("testing", simInfo, i, false);
+        fileHandler.saveDynamic("testing", simInfo, i, false);
     }
 }

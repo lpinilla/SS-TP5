@@ -76,33 +76,7 @@ public class FileHandler {
         return info;
     }
 
-    public void saveDynamic(SimInfo i, int n) {
-        String fileOutputPath = "resources/dynamic.txt";
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileOutputPath), true) );
-            writer.write(Integer.toString(i.getN()));
-            writer.newLine();
-            writer.write(Integer.toString(n));
-            writer.newLine();
-            double aux;
-            for(Particle p : i.getAllParticles()){
-                aux = Math.sqrt(Math.pow(p.getVx(), 2)+Math.pow(p.getVy(), 2));
-                String builder =
-                        String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getY()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getRadius()) + "    " +
-                        String.format(Locale.US, "%6.7e", aux);
-                writer.write(builder);
-                writer.newLine();
-            }
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void saveDynamicForAnimation(String filename, SimInfo info, int i, boolean ovitoGraph) {
+    public void saveDynamic(String filename, SimInfo info, int i, boolean ovitoGraph) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + filename + ".txt"), true));
@@ -115,7 +89,8 @@ public class FileHandler {
             for(Particle p : info.getAllParticles()){
                 String builder =
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
-                        String.format(Locale.US, "%6.7e", p.getY());
+                        String.format(Locale.US, "%6.7e", p.getY()) + "    " +
+                        String.format(Locale.US, "%6.7e", p.getRadius());
                 writer.write(builder);
                 writer.newLine();
             }
