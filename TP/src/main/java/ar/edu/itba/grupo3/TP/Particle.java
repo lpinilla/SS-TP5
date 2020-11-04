@@ -22,7 +22,6 @@ public class Particle implements Comparable<Particle> {
     private Double targetY;
     private Set<Particle> neighbours; //list of neighbours
     private Double speed;
-    private boolean collision;
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
@@ -43,7 +42,6 @@ public class Particle implements Comparable<Particle> {
         this.prevY = 0.0;
         this.speed = 0d;
         this.targetX = this.targetY = 0d;
-        this.collision = false;
         this.neighbours = new TreeSet<>();
         this.particlesSameCellList = new LinkedList<>();
         this.particlesSameCellList.add(this);
@@ -150,30 +148,20 @@ public class Particle implements Comparable<Particle> {
     }
 
     public void setNextTarget(){
-        //ifCollision
         setVx(targetX - x);
         setVy(targetY - y);
     }
 
     public void updateRadius(double rmax, double tau, double deltaT, double rmin) {
-        if(collision){
-            radius=rmin;
-        }
-        else {
-            if(radius > rmax){
-                radius = rmax;
-            }else{
-                setRadius(radius + rmax * deltaT / tau);
-            }
+        if(radius > rmax){
+            radius = rmax;
+        }else{
+            setRadius(radius + rmax * deltaT / tau);
         }
     }
 
     public void updateSpeed(double dmax, double ve, double rmin, double rmax, double beta) {
-        if(collision){
-            setSpeed(ve);
-        }else{
-            setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
-        }
+        setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
     }
 
     public void updatePosition(double deltaT, double rmin, double L) {
@@ -186,6 +174,40 @@ public class Particle implements Comparable<Particle> {
     public boolean isColliding(Particle p2){
         return distanceToParticle(p2) < (radius + p2.radius);
     }
+
+    public int collisionWithWalls(double w){
+        //colisión pared izquierda x = 0
+        if(x < radius) return 1;
+        //colisión pared derecha x = w
+        if(w - x < radius) return 2;
+        return 0;
+    }
+
+    public void collide(double rmin, double ve, double vx, double vy){
+        //cambiar el radio
+        radius = rmin;
+        //cambiar la rapidez
+        speed = ve;
+        //cambiar los versores de la velocidad
+        setVx(vx);
+        setVy(vy);
+    }
+
+    public void collideWithParticle(Particle p, double rmin, double ve){
+        //calcular versor hacia la partícula
+        double deltaX = p.getX() - x;
+        double deltaY = p.getY() - y;
+        //utilizar la dirección contraria
+        collide(rmin, ve, -deltaX, -deltaY);
+    }
+
+
+    public void collideWithWall(int wcol, double rmin, double ve){
+        //cambiar el versor x correspondiente depende de que pared era
+        collide(rmin, ve, (wcol == 1)? 1d : -1d, vy);
+    }
+
+
 
 
 }

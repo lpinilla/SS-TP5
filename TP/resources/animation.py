@@ -5,17 +5,18 @@ from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
 
 #follow = 15
 size = 10
-h = 2.5
+w = 3
 
 times = [
     {
     't' : 0,
     'x' : [],
-    'y' : []
+    'y' : [],
+    'r' : []
     }
 ]
 
-aux = {'t': 0, 'x' : [], 'y' : [], 'v' : []}
+aux = {'t': 0, 'x' : [], 'y' : [], 'r' : []}
 
 with open(str(sys.argv[1])) as f:
     next(f)
@@ -25,12 +26,12 @@ with open(str(sys.argv[1])) as f:
         if(len(data) == 1):
             if(len(aux['x']) != 0):
                 times.append(aux)
-                aux = {'t': 0, 'x' : [], 'y' : []}#, 'v' : []}
+                aux = {'t': 0, 'x' : [], 'y' : [], 'r' : []}
             aux['t'] = data[0]
         else:
             aux['x'].append(float(data[0]))
             aux['y'].append(float(data[1]))
-            #aux['v'].append(float(data[2]))
+            aux['r'].append(float(data[2]))
 f.close()
 
 times = times[1:]
@@ -45,7 +46,7 @@ times = times[1:]
 
 def init():
     ax.set_ylim(0, size)
-    ax.set_xlim(-size, size)
+    ax.set_xlim(-2.5, 5)
     ax.grid(linestyle='-', linewidth='0.5')
     del xdata[:]
     del ydata[:]
@@ -58,18 +59,30 @@ part, = ax.plot([], [], '.', color="red", markersize=6)
 ax.grid()
 xdata, ydata = [], []
 
-rect = plt.Rectangle((-size,size - h), 2 * size, h, color='yellow', fill=False)
-plt.gcf().gca().add_artist(rect)
+left_rect = plt.Rectangle((-0.5,0), 0.5, size, color='yellow', fill=False)
+right_rect = plt.Rectangle((w,0), 0.5, size, color='yellow', fill=False)
+plt.gcf().gca().add_artist(left_rect)
+plt.gcf().gca().add_artist(right_rect)
+
+def create_circles(x, y, r):
+    circles = []
+    for i in range(len(x)):
+        circles.append(plt.Circle((x[i], y[i]), r[i], color='blue', fill=False))
+        #plt.gcf().gca().add_artist(cir)
+    return circles
 
 def animate(i):
     x = times[i]['x'][0:]
     y = times[i]['y'][0:]
-    #part.set_data(times[i]['x'][follow], times[i]['y'][follow])
+    r = times[i]['r'][0:]
     line.set_data(x,y)
     ax.set_title(str(i))
+    ax.patches = []
+    circles = create_circles(x,y,r)
+    for i in range(len(circles)):
+        ax.add_patch(circles[i])
     return line,
     #frame = str(i)
-
 
 animation = ani.FuncAnimation(fig, animate, frames= len(times), interval=1, repeat=True, init_func=init)
 plt.show()
