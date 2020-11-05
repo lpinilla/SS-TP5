@@ -88,13 +88,13 @@ public class FileHandler{
             writer.newLine();
             //necesito 4 particulas de radio 0 para "fijar" los bordes en ovito
             if(ovitoGraph) {
-                writer.write(0 + "    " + 0 + "    " + 0.1 + "    " + 0);
+                writer.write(0 + "    " + 0 + "    " + 0.01 + "    " + 0);
                 writer.newLine();
-                writer.write(0 + "    " + info.getL() + "    " + 0.1 + "    " + 0);
+                writer.write(0 + "    " + info.getL() + "    " + 0.01 + "    " + 0);
                 writer.newLine();
-                writer.write(info.getH() + "    " + 0 + "    " + 0.1 + "    " + 0);
+                writer.write(info.getH() + "    " + 0 + "    " + 0.01 + "    " + 0);
                 writer.newLine();
-                writer.write(info.getH() + "    " + info.getL() + "    " + 0.1 + "    " + 0);
+                writer.write(info.getH() + "    " + info.getL() + "    " + 0.01 + "    " + 0);
                 writer.newLine();
             }
             for (Particle p : info.getAllParticles()) {
@@ -103,7 +103,7 @@ public class FileHandler{
                         String.format(Locale.US, "%6.7e", p.getX()) + "    " +
                                 String.format(Locale.US, "%6.7e", p.getY()) + "    " +
                                 String.format(Locale.US, "%6.7e", p.getRadius()) + "    " +
-                                String.format(Locale.US, "%6.7e", aux);
+                                String.format(Locale.US, "%6.7e", p.getSpeed());
                 writer.write(builder);
                 writer.newLine();
             }
@@ -169,6 +169,24 @@ public class FileHandler{
             System.out.println(e.getMessage());
         }
     }
+
+    public void saveSpeedAVG(List<Particle> l){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(
+                    new File(basePath + "/" + velocity +"_"+Integer.toString(l.size())+ ".tsv"), true));
+            Double speedSUM=0.0;
+            for (Particle p : l) {
+                speedSUM+=p.getSpeed();
+            }
+            writer.write(String.format(Locale.US, "%6.7e", speedSUM/(double)l.size()));
+            writer.newLine();
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     public void saveData(String file, double idx, double data){
         try {
