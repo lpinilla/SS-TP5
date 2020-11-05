@@ -155,7 +155,7 @@ public class Particle implements Comparable<Particle> {
     }
 
     public void updateRadius(double rmax, double tau, double deltaT, double rmin) {
-        if(radius > rmax){
+        if(radius >= rmax){
             radius = rmax;
         }else{
             setRadius(radius + rmax * deltaT / tau);
