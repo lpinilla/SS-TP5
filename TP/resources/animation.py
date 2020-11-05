@@ -7,6 +7,11 @@ from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
 size = 10
 w = 3
 
+axis_left = -3
+axis_right = 6
+axis_down = -0.5
+axis_up = size + 0.5
+
 times = [
     {
     't' : 0,
@@ -45,8 +50,8 @@ times = times[1:]
 #ax.yaxis.set_major_locator(MultipleLocator(10))
 
 def init():
-    ax.set_ylim(0, size)
-    ax.set_xlim(-2.5, 5)
+    ax.set_ylim(axis_down, axis_up)
+    ax.set_xlim(axis_left, axis_right)
     ax.grid(linestyle='-', linewidth='0.5')
     del xdata[:]
     del ydata[:]

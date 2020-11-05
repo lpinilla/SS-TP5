@@ -144,12 +144,14 @@ public class Particle implements Comparable<Particle> {
 
     public void findTarget(){
         setTargetX(x);
-        setTargetY(y + 1d);
+        setTargetY(y + 2d);
     }
 
     public void setNextTarget(){
-        setVx(targetX - x);
-        setVy(targetY - y);
+        double deltaX = targetX - x;
+        double deltaY = targetY - y;
+        setVx(Math.signum(deltaX));
+        setVy(Math.signum(deltaY));
     }
 
     public void updateRadius(double rmax, double tau, double deltaT, double rmin) {
