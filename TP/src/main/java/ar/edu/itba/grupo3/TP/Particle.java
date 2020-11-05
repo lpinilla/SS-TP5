@@ -76,37 +76,6 @@ public class Particle implements Comparable<Particle> {
         return particlesSameCellList;
     }
 
-    public void moveAgent(float l) {
-        double xPos = (Math.cos(this.getAngle()) * speed) + this.getX();
-        double yPos = (Math.sin(this.getAngle()) * speed) + this.getY();
-        if (xPos < 0) xPos += l;
-        if (yPos < 0) yPos += l;
-        if (yPos > l) yPos %= l;
-        if (xPos > l) xPos %= l;
-        this.setX(xPos);
-        this.setY(yPos);
-    }
-
-    public void calculateNewAngle(double randomVal) {
-        double sinAux = Math.sin(this.getAngle());
-        double cosAux = Math.cos(this.getAngle());
-        Set<Particle> neighbors = this.getNeighbours();
-        for (Particle p : neighbors) {
-            sinAux += Math.sin(p.getAngle());
-            cosAux += Math.cos(p.getAngle());
-        }
-        if (neighbors.size() > 0) {
-            sinAux /= neighbors.size() + 1;
-            cosAux /= neighbors.size() + 1;
-        }
-        double newProperty = Math.atan2(sinAux, cosAux);
-        if (newProperty < 0) newProperty += Math.PI * 2;
-        double finalProperty = newProperty + randomVal;
-        if (finalProperty > Math.PI * 2) finalProperty -= 2 * Math.PI;
-        if (finalProperty < 0) finalProperty += Math.PI * 2;
-        this.setAngle(finalProperty);
-    }
-
     public double angleBetweenParticle(Particle p) {
         double deltaX = p.getX() - this.x;
         double deltaY = p.getY() - this.y;
@@ -168,9 +137,9 @@ public class Particle implements Comparable<Particle> {
 
     public void updatePosition(double deltaT, double rmin, double L) {
         //movimiento en x
-        setX(this.x + vx * deltaT);
+        setX(this.x + speed * vx * deltaT);
         //movimiento en Y
-        setY((this.y + vy * deltaT) % L);
+        setY((this.y + speed * vy * deltaT) % L);
     }
 
     public boolean isColliding(Particle p2){
@@ -203,13 +172,10 @@ public class Particle implements Comparable<Particle> {
         collide(rmin, ve, -deltaX, -deltaY);
     }
 
-
     public void collideWithWall(int wcol, double rmin, double ve){
         //cambiar el versor x correspondiente depende de que pared era
         collide(rmin, ve, (wcol == 1)? 1d : -1d, vy);
     }
-
-
 
 
 }
