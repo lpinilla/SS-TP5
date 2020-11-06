@@ -8,9 +8,16 @@ size = 10
 w = 3
 
 axis_left = -3
-axis_right = 6
+axis_right = 2 * w
 axis_down = -0.5
 axis_up = size + 0.5
+
+#prueba3
+#axis_right = 6
+#axis_left = -1
+#axis_down = 5
+#axis_up = 8
+
 
 times = [
     {

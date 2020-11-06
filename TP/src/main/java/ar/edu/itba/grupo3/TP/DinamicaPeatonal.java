@@ -15,7 +15,7 @@ public class DinamicaPeatonal {
         fileHandler = new FileHandler("resources");
         simInfo = fileHandler.loadData();
         this.saveFactor = saveFactor;
-        deltaT = simInfo.getRmin() /  (2 * Math.max(simInfo.getDmax(), simInfo.getVe()));
+        this.deltaT = simInfo.getRmin() /  (2 * Math.max(simInfo.getDmax(), simInfo.getVe()));
         this.width = width;
         cim = new CIM(simInfo, 10, width, true, true);
         cim.recalculateHeads();

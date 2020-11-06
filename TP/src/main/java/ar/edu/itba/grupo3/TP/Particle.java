@@ -168,8 +168,9 @@ public class Particle implements Comparable<Particle> {
         //calcular versor hacia la partícula
         double deltaX = p.getX() - x;
         double deltaY = p.getY() - y;
+        double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         //utilizar la dirección contraria
-        collide(rmin, ve, -deltaX, -deltaY);
+        collide(rmin, ve, -deltaX / length, -deltaY / length);
     }
 
     public void collideWithWall(int wcol, double rmin, double ve){
