@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -128,9 +129,9 @@ public class Particle implements Comparable<Particle> {
     public void updateRadius(double rmax, double tau, double deltaT) {
         if(willCollide) return;
         if(radius >= rmax){
-        radius = rmax;
+            radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
         }else{
-        setRadius(radius + rmax * deltaT / tau);
+            setRadius(radius + rmax * deltaT / tau);
         }
     }
 
