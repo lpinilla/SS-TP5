@@ -35,6 +35,7 @@ public class DinamicaPeatonal {
             for(Particle n : neighbors){
                 if(p.isColliding(n)){
                     p.collideWithParticle(n, simInfo.getRmin(), simInfo.getVe());
+                    n.setWillCollide(true);
                     n.collideWithParticle(p, simInfo.getRmin(), simInfo.getVe());
                 }
             }

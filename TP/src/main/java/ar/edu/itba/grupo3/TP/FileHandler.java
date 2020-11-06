@@ -13,8 +13,8 @@ import java.util.Locale;
 public class FileHandler{
 
     private String basePath;
-    private String staticInputFile = "static_10_part";
-    private String dynamicInputfile = "10_part";
+    private String staticInputFile = "RandomStaticInput";
+    private String dynamicInputfile = "RandomDynamicInput";
     private final String dynamicFile = "dynamicOutput";
     private final String velocity = "velocity";
     private final String position = "position";

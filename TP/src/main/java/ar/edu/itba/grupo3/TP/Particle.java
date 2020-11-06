@@ -22,6 +22,7 @@ public class Particle implements Comparable<Particle> {
     private Double targetY;
     private Set<Particle> neighbours; //list of neighbours
     private Double speed;
+    private boolean willCollide;
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
@@ -117,6 +118,7 @@ public class Particle implements Comparable<Particle> {
     }
 
     public void setNextTarget(){
+        if(willCollide) return;
         double deltaX = targetX - x;
         double deltaY = targetY - y;
         setVx(Math.signum(deltaX));
@@ -124,14 +126,16 @@ public class Particle implements Comparable<Particle> {
     }
 
     public void updateRadius(double rmax, double tau, double deltaT) {
+        if(willCollide) return;
         if(radius >= rmax){
-            radius = rmax;
+        radius = rmax;
         }else{
-            setRadius(radius + rmax * deltaT / tau);
+        setRadius(radius + rmax * deltaT / tau);
         }
     }
 
     public void updateSpeed(double dmax, double rmin, double rmax, double beta) {
+        if(willCollide) return;
         setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
     }
 
@@ -140,6 +144,7 @@ public class Particle implements Comparable<Particle> {
         setX(this.x + speed * vx * deltaT);
         //movimiento en Y
         setY((this.y + speed * vy * deltaT) % L);
+        setWillCollide(false);
     }
 
     public boolean isColliding(Particle p2){
@@ -177,6 +182,7 @@ public class Particle implements Comparable<Particle> {
         //cambiar el versor x correspondiente depende de que pared era
         collide(rmin, ve, (wcol == 1)? 1d : -1d, vy);
     }
+
 
 
 }
