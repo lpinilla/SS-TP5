@@ -145,7 +145,7 @@ public class Particle implements Comparable<Particle> {
         setX(this.x + speed * vx * deltaT);
         //movimiento en Y
         setY((this.y + speed * vy * deltaT) % L);
-        setWillCollide(false);
+        //setWillCollide(false);
     }
 
     public boolean isColliding(Particle p2){

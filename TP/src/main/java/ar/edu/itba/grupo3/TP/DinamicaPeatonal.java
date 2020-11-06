@@ -24,6 +24,7 @@ public class DinamicaPeatonal {
     public void evolveSystem(int i, String outputFile){
         cim.recalculateHeads();
         cim.calculateNeighbors();
+        simInfo.getAllParticles().forEach(p -> p.setWillCollide(false));
         for(Particle p : simInfo.getAllParticles()){
             p.findTarget();
             p.setNextTarget();
