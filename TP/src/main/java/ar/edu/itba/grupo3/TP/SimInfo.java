@@ -11,8 +11,8 @@ import java.util.List;
 public class SimInfo {
 
     private int N; //numero total de particulas
-    private double L; //ancho de pasillo
-    private double H; //altura del pasillo
+    private double L; //altura del cuadrado
+    private double W; //longitud del pasillo
     private double rmin;
     private double rmax;
     private double dmax;
@@ -24,7 +24,7 @@ public class SimInfo {
     public SimInfo(){
         this.N = 0;
         this.L = 0;
-        this.H = 0d;
+        this.W = 0d;
         this.rmin = 0d;
         this.rmax = 0d;
         this.dmax = 0d;

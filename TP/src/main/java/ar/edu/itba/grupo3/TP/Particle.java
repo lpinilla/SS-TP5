@@ -123,7 +123,7 @@ public class Particle implements Comparable<Particle> {
         setVy(Math.signum(deltaY));
     }
 
-    public void updateRadius(double rmax, double tau, double deltaT, double rmin) {
+    public void updateRadius(double rmax, double tau, double deltaT) {
         if(radius >= rmax){
             radius = rmax;
         }else{
@@ -131,11 +131,11 @@ public class Particle implements Comparable<Particle> {
         }
     }
 
-    public void updateSpeed(double dmax, double ve, double rmin, double rmax, double beta) {
+    public void updateSpeed(double dmax, double rmin, double rmax, double beta) {
         setSpeed(dmax * Math.pow(((radius - rmin) / (rmax - rmin)), beta));
     }
 
-    public void updatePosition(double deltaT, double rmin, double L) {
+    public void updatePosition(double deltaT, double L) {
         //movimiento en x
         setX(this.x + speed * vx * deltaT);
         //movimiento en Y
@@ -156,9 +156,9 @@ public class Particle implements Comparable<Particle> {
 
     public void collide(double rmin, double ve, double vx, double vy){
         //cambiar el radio
-        radius = rmin;
+        setRadius(rmin);
         //cambiar la rapidez
-        speed = ve;
+        setSpeed(ve);
         //cambiar los versores de la velocidad
         setVx(vx);
         setVy(vy);

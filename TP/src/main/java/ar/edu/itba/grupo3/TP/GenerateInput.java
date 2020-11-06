@@ -28,12 +28,12 @@ public class GenerateInput {
      * @param tau tau tiempo hasta alcanzar la velocidad máxima
      * @param beta factor que define la relación entre la rapidez y el radio actual
      */
-    public void generateInputs(int N, double L, double w, double rmin, double rmax, double dmax, double ve, double tau, double beta){
-        generateStaticFile(N, L, w, rmin, rmax, dmax, ve, tau, beta);
-        generateDynamic(N, L, w, rmin);
+    public void generateInputs(int N, double L, double W, double rmin, double rmax, double dmax, double ve, double tau, double beta){
+        generateStaticFile(N, L, W, rmin, rmax, dmax, ve, tau, beta);
+        generateDynamic(N, L, W, rmin);
     }
 
-    private void generateStaticFile(int N, double L, double w,
+    private void generateStaticFile(int N, double L, double W,
                                     double rmin, double rmax,
                                     double dmax, double ve,
                                     double tau, double beta){
@@ -42,7 +42,7 @@ public class GenerateInput {
             PrintWriter writer = new PrintWriter(outputStream);
             writer.println(N);
             writer.println(L);
-            writer.println(w);
+            writer.println(W);
             writer.println(rmin);
             writer.println(rmax);
             writer.println(dmax);
@@ -58,7 +58,7 @@ public class GenerateInput {
         }
     }
 
-    private void generateDynamic(int N, double L, double w, double rmin){
+    private void generateDynamic(int N, double L, double W, double rmin){
         try {
             OutputStream outputStream = new FileOutputStream(new File("resources/RandomDynamicInput.txt"));
             PrintWriter writer = new PrintWriter(outputStream);
@@ -68,7 +68,7 @@ public class GenerateInput {
             for (int i = 0; i < N; i++) {
                 //generar posiciones x e y hasta que se encuentre una que no colisione
                 do {
-                    xpos = ThreadLocalRandom.current().nextDouble(rmin, w - rmin);
+                    xpos = ThreadLocalRandom.current().nextDouble(rmin, W - rmin);
                     ypos = ThreadLocalRandom.current().nextDouble(rmin, L - rmin);
                 }while(checkIfCollision(xpos, ypos, rmin));
                 writer.println(

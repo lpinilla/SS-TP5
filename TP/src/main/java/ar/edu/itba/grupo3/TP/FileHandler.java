@@ -37,7 +37,7 @@ public class FileHandler{
             BufferedReader br = new BufferedReader(new FileReader(new File(staticInputFile)));
             ret.setN(Integer.parseInt(br.readLine()));          //N
             ret.setL(Double.parseDouble(br.readLine()));        //L
-            ret.setH(Double.parseDouble(br.readLine()));        //H
+            ret.setW(Double.parseDouble(br.readLine()));        //W
             ret.setRmin(Double.parseDouble(br.readLine()));     //rmin
             ret.setRmax(Double.parseDouble(br.readLine()));     //rmax
             ret.setDmax(Double.parseDouble(br.readLine()));     //dmax
@@ -92,9 +92,9 @@ public class FileHandler{
                 writer.newLine();
                 writer.write(0 + "    " + info.getL() + "    " + 0.01 + "    " + 0);
                 writer.newLine();
-                writer.write(info.getH() + "    " + 0 + "    " + 0.01 + "    " + 0);
+                writer.write(info.getW() + "    " + 0 + "    " + 0.01 + "    " + 0);
                 writer.newLine();
-                writer.write(info.getH() + "    " + info.getL() + "    " + 0.01 + "    " + 0);
+                writer.write(info.getW() + "    " + info.getL() + "    " + 0.01 + "    " + 0);
                 writer.newLine();
             }
             for (Particle p : info.getAllParticles()) {

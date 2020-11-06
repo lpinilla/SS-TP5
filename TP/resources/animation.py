@@ -89,6 +89,6 @@ def animate(i):
     return line,
     #frame = str(i)
 
-animation = ani.FuncAnimation(fig, animate, frames= len(times), interval=1, repeat=True, init_func=init)
+animation = ani.FuncAnimation(fig, animate, frames=len(times), interval=1, repeat=True, init_func=init)
 plt.show()
 #animation.save('poc.gif', writer='imagemagick')
