@@ -128,10 +128,12 @@ public class Particle implements Comparable<Particle> {
 
     public void updateRadius(double rmax, double tau, double deltaT) {
         if(willCollide) return;
-        if(radius >= rmax){
-            radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
+        double radioAux=radius + rmax * deltaT / tau;
+        if(radius >= rmax || radioAux >=rmax){
+//            radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
+            radius=rmax;
         }else{
-            setRadius(radius + rmax * deltaT / tau);
+            setRadius(radioAux);
         }
     }
 
