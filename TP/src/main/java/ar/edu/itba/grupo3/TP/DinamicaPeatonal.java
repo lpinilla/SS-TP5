@@ -4,12 +4,12 @@ import java.util.Set;
 
 public class DinamicaPeatonal {
 
-    private FileHandler fileHandler;
-    private SimInfo simInfo;
-    private double deltaT;
+    private final FileHandler fileHandler;
+    private final SimInfo simInfo;
+    private final double deltaT;
     private int saveFactor;
-    private double width;
-    private CIM cim;
+    private final double width;
+    private final CIM cim;
 
     public DinamicaPeatonal(int saveFactor, double width){
         fileHandler = new FileHandler("resources");
@@ -42,6 +42,7 @@ public class DinamicaPeatonal {
             }
             p.updatePosition(deltaT, simInfo.getL());
         }
+        //simInfo.getAllParticles().forEach(p -> p.updatePosition(deltaT, simInfo.getL()));
         fileHandler.saveDynamic(outputFile, simInfo, i, false);
     }
 }

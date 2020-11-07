@@ -129,9 +129,9 @@ public class Particle implements Comparable<Particle> {
     public void updateRadius(double rmax, double tau, double deltaT) {
         if(willCollide) return;
         if(radius >= rmax){
-            radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
+            //radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
         }else{
-            setRadius(radius + rmax * deltaT / tau);
+            setRadius(Math.min(radius + rmax * deltaT / tau, rmax));
         }
     }
 
@@ -181,7 +181,7 @@ public class Particle implements Comparable<Particle> {
 
     public void collideWithWall(int wcol, double rmin, double ve){
         //cambiar el versor x correspondiente depende de que pared era
-        collide(rmin, ve, (wcol == 1)? 1d : -1d, vy);
+        collide(rmin, ve,(wcol == 1)? 1d : -1d, vy);
     }
 
 
