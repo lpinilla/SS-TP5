@@ -40,9 +40,9 @@ public class DinamicaPeatonal {
                     n.collideWithParticle(p, simInfo.getRmin(), simInfo.getVe());
                 }
             }
-            p.updatePosition(deltaT, simInfo.getL());
+            //p.updatePosition(deltaT, simInfo.getL());
         }
-        //simInfo.getAllParticles().forEach(p -> p.updatePosition(deltaT, simInfo.getL()));
+        simInfo.getAllParticles().forEach(p -> p.updatePosition(deltaT, simInfo.getL()));
         fileHandler.saveDynamic(outputFile, simInfo, i, false);
     }
 }
