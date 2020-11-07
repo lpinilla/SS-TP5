@@ -175,10 +175,14 @@ public class FileHandler{
             BufferedWriter writer = new BufferedWriter(new FileWriter(
                     new File(basePath + "/" + velocity +"_"+Integer.toString(l.size())+ ".tsv"), true));
             Double speedSUM=0.0;
+            Double vx=0.0;
+            Double vy=0.0;
             for (Particle p : l) {
-                speedSUM+=p.getSpeed();
+                vx+=p.getVx();
+                vy+=p.getVy();
             }
-            writer.write(String.format(Locale.US, "%6.7e", speedSUM/(double)l.size()));
+            Double calc=Math.sqrt(vx*vx+vy*vy);
+            writer.write(String.format(Locale.US, "%6.7e", calc/(double)l.size()));
             writer.newLine();
             writer.flush();
             writer.close();
