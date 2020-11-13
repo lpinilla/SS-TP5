@@ -129,7 +129,7 @@ public class Particle implements Comparable<Particle> {
     public void updateRadius(double rmax, double tau, double deltaT) {
         if(willCollide) return;
         if(radius >= rmax){
-            //radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
+            radius = rmax * ThreadLocalRandom.current().nextDouble(0.9, 1.1);
         }else{
             setRadius(Math.min(radius + rmax * deltaT / tau, rmax));
         }

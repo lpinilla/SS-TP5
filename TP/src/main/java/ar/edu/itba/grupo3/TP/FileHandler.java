@@ -173,16 +173,19 @@ public class FileHandler{
     public void saveSpeedAVG(List<Particle> l){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(
-                    new File(basePath + "/" + velocity +"_"+Integer.toString(l.size())+ ".tsv"), true));
-            Double speedSUM=0.0;
-            Double vx=0.0;
-            Double vy=0.0;
+                    new File(basePath + "/" + velocity + "_" + Integer.toString(l.size()) + ".tsv"), true));
+            Double speedSUM = 0.0;
+            Double vx = 0.0;
+            Double vy = 0.0;
             for (Particle p : l) {
-                vx+=p.getVx();
-                vy+=p.getVy();
+                if(!p.isWillCollide()){
+                    speedSUM+=p.getSpeed();
+                }
+//                vx += p.getVx();
+//                vy += p.getVy();
             }
-            Double calc=Math.sqrt(vx*vx+vy*vy);
-            writer.write(String.format(Locale.US, "%6.7e", calc/(double)l.size()));
+//            Double calc = Math.sqrt(vx * vx + vy * vy);
+            writer.write(String.format(Locale.US, "%6.7e", speedSUM / (double) l.size()));
             writer.newLine();
             writer.flush();
             writer.close();

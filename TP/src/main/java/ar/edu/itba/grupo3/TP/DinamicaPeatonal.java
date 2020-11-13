@@ -11,7 +11,7 @@ public class DinamicaPeatonal {
     private final double width;
     private final CIM cim;
 
-    public DinamicaPeatonal(int saveFactor, double width){
+    public DinamicaPeatonal(int saveFactor, double width, String outputFile){
         fileHandler = new FileHandler("resources");
         simInfo = fileHandler.loadData();
         this.saveFactor = saveFactor;
@@ -19,6 +19,7 @@ public class DinamicaPeatonal {
         this.width = width;
         cim = new CIM(simInfo, 10, width, true, true);
         cim.recalculateHeads();
+        fileHandler.saveDynamic(outputFile, simInfo, 0, true);
     }
 
     public void evolveSystem(int i, String outputFile){
@@ -42,6 +43,7 @@ public class DinamicaPeatonal {
             }
             p.updatePosition(deltaT, simInfo.getL());
         }
-        fileHandler.saveDynamic(outputFile, simInfo, i, false);
+        fileHandler.saveDynamic(outputFile, simInfo, i, true);
+        fileHandler.saveSpeedAVG(simInfo.getAllParticles());
     }
 }
